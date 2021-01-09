@@ -2,13 +2,12 @@ package com.spring.boot.interview.springbootinterview.controllers;
 
 import java.util.List;
 
-import org.springframework.http.ResponseEntity;
+public interface GenericController<T, U, V> {
 
-public interface GenericController<T> {
-	
-	void addList(List<T> list);
-	void add(T object);
-	ResponseEntity<T> findById(Long id);
+	void addList(List<U> list);
+	V add(U object);
+	T findById(Long id);
+	List<T> findAll();
 	void update(T object);
 	void remove(Long id);
 

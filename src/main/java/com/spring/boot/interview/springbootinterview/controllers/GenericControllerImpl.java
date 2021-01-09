@@ -1,55 +1,52 @@
 package com.spring.boot.interview.springbootinterview.controllers;
 
+import com.spring.boot.interview.springbootinterview.services.GenericService;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-
-import com.spring.boot.interview.springbootinterview.services.GenericService;
-
-public class GenericControllerImpl<T> implements GenericController<T> {
+public class GenericControllerImpl<T, U, V> implements GenericController<T, U, V> {
 	
-	protected GenericService<T> genericService;
+	protected GenericService<T, U, V> genericService;
 	
-	public GenericControllerImpl(GenericService<T> genericService) {
+	public GenericControllerImpl(GenericService<T, U, V> genericService) {
         this.genericService = genericService;
     }
 
 	@ResponseStatus(HttpStatus.CREATED)
 	@PostMapping(name = "/addList")
-	public void addList(List<T> list) {
+	public void addList(List<U> list) {
 		this.genericService.add(list);
 	}
 
 	@ResponseStatus(HttpStatus.CREATED)
 	@PostMapping("/create")
-	public void add(T object) {
-		this.genericService.add(object);
+	public V add(@RequestBody U object) {
+		return this.genericService.add(object);
 	}
 
 	@ResponseStatus(HttpStatus.OK)
 	@GetMapping(value = "/{id}")
-	public ResponseEntity<T> findById(Long id) {
-		T obj = this.genericService
-                .findById(id)
-                .orElseThrow();
-        return ResponseEntity.ok(obj);
+	public T findById(@PathVariable("id") Long id) {
+		return this.genericService.findById(id);
 	}
 
-	@ResponseStatus(HttpStatus.NO_CONTENT)
+	@ResponseStatus(HttpStatus.OK)
+	@GetMapping
+	public List<T> findAll() {
+		return this.genericService.findAll();
+	}
+
+	@ResponseStatus(HttpStatus.ACCEPTED)
 	@PutMapping
-	public void update(T object) {
+	public void update(@RequestBody T object) {
 		this.genericService.update(object);
 	}
 
-	@ResponseStatus(HttpStatus.NO_CONTENT)
+	@ResponseStatus(HttpStatus.ACCEPTED)
 	@DeleteMapping(value = "/{id}")
-	public void remove(Long id) {
+	public void remove(@PathVariable("id") Long id) {
 		this.genericService.remove(id);
 	}
 

@@ -1,6 +1,6 @@
 package com.spring.boot.interview.springbootinterview.entities;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -24,7 +24,7 @@ public class Client {
 	private String fullName;
 	
 	@Column(name = "date_of_birth")
-	private Date dateOfBirth;
+	private LocalDate dateOfBirth;
 	
 	private int age;
 	
